@@ -36,3 +36,10 @@ body {
 body {
   @apply bg-bg text-text antialiased scroll-smooth font-urbanist;
 }
+
+.bannerSlide .swiper-scrollbar {
+  @apply bg-baseColor/20;
+}
+.bannerSlide .swiper-scrollbar-drag {
+  @apply bg-baseColor;
+}
