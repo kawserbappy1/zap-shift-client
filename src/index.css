@@ -14,7 +14,7 @@
 
   --color-text: #606060;
   --color-heading: #03373d;
-  --color-primary: #caeb66;
+  --color-baseColor: #caeb66;
 
   /* breakpoint schema  */
   --breakpoint-sm: 30rem;
@@ -22,4 +22,17 @@
   --breakpoint-lg: 64rem;
   --breakpoint-xl: 80rem;
   --breakpoint-2xl: 96rem;
+}
+/* Better box sizing everywhere */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+html,
+body {
+  height: 100%;
+}
+body {
+  @apply bg-bg text-text antialiased scroll-smooth font-urbanist;
 }

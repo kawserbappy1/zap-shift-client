@@ -8,7 +8,7 @@ import Blog from "../pages/Blog/Blog";
 import Contact from "../pages/Contact/Contact";
 import Pricing from "../pages/Pricing/Pricing";
 
-const router = createBrowserRouter([
+export const router = createBrowserRouter([
   {
     path: "/",
     element: <MainLayouts></MainLayouts>,
@@ -34,7 +34,7 @@ const router = createBrowserRouter([
         element: <Blog></Blog>,
       },
       {
-        path: "pracing",
+        path: "pricing",
         element: <Pricing></Pricing>,
       },
       {
