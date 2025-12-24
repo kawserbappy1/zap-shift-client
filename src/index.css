@@ -1,0 +1,25 @@
+/* Google Fonts  */
+@import url("https://fonts.googleapis.com/css2?family=Urbanist:ital,wght@0,100..900;1,100..900&display=swap");
+
+@import "tailwindcss";
+@plugin "daisyui";
+
+@theme {
+  /* font  */
+  --font-urbanist: "Urbanist", sans-serif;
+  /* color schema  */
+  --color-bg: #eaeced;
+  --color-bg1: #03373d;
+  --color-bg2: #0b0b0b;
+
+  --color-text: #606060;
+  --color-heading: #03373d;
+  --color-primary: #caeb66;
+
+  /* breakpoint schema  */
+  --breakpoint-sm: 30rem;
+  --breakpoint-md: 48rem;
+  --breakpoint-lg: 64rem;
+  --breakpoint-xl: 80rem;
+  --breakpoint-2xl: 96rem;
+}
