@@ -1,11 +1,16 @@
-import React from "react";
 import Banner from "./Elements/Banner/Banner";
+import HowItWork from "./Elements/HowItWork/HowItWork";
 
 const HomePage = () => {
   return (
-    <div>
-      <Banner></Banner>
-    </div>
+    <>
+      <section>
+        <Banner></Banner>
+      </section>
+      <section>
+        <HowItWork></HowItWork>
+      </section>
+    </>
   );
 };
 

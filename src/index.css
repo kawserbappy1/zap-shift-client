@@ -29,10 +29,7 @@
 *::after {
   box-sizing: border-box;
 }
-html,
-body {
-  height: 100%;
-}
+
 body {
   @apply bg-bg text-text antialiased scroll-smooth font-urbanist;
 }
