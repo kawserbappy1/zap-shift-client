@@ -1,5 +1,7 @@
 import Banner from "./Elements/Banner/Banner";
+import Brand from "./Elements/Brand/Brand";
 import HowItWork from "./Elements/HowItWork/HowItWork";
+import Services from "./Elements/Services/Services";
 
 const HomePage = () => {
   return (
@@ -9,6 +11,12 @@ const HomePage = () => {
       </section>
       <section>
         <HowItWork></HowItWork>
+      </section>
+      <section className=" my-20">
+        <Services></Services>
+      </section>
+      <section className=" my-20">
+        <Brand></Brand>
       </section>
     </>
   );
