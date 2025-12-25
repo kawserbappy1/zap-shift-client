@@ -11,7 +11,7 @@ const Brand = () => {
     <div>
       <div className="text-center">
         <h1 className="text-3xl font-bold text-bg1">
-          We've helped thousands of sales teams
+          We've helped thousands of sales teams
         </h1>
       </div>
       <Container>
