@@ -2,6 +2,7 @@ import Banner from "./Elements/Banner/Banner";
 import Brand from "./Elements/Brand/Brand";
 import Feature from "./Elements/Feature/Feature";
 import HowItWork from "./Elements/HowItWork/HowItWork";
+import Mercent from "./Elements/Mercent/Mercent";
 import Services from "./Elements/Services/Services";
 
 const HomePage = () => {
@@ -21,6 +22,9 @@ const HomePage = () => {
       </section>
       <section className=" my-20">
         <Feature></Feature>
+      </section>
+      <section className=" my-20">
+        <Mercent></Mercent>
       </section>
     </>
   );
