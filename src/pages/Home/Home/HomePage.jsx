@@ -1,5 +1,6 @@
 import Banner from "./Elements/Banner/Banner";
 import Brand from "./Elements/Brand/Brand";
+import FAQ from "./Elements/FAQ/FAQ";
 import Feature from "./Elements/Feature/Feature";
 import HowItWork from "./Elements/HowItWork/HowItWork";
 import Mercent from "./Elements/Mercent/Mercent";
@@ -29,6 +30,9 @@ const HomePage = () => {
       </section>
       <section className=" my-20">
         <Testimonial></Testimonial>
+      </section>
+      <section className=" my-20">
+        <FAQ></FAQ>
       </section>
     </>
   );
