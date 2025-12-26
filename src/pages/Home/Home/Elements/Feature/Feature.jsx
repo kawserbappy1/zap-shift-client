@@ -28,7 +28,7 @@ const Feature = () => {
           {items.map((item) => (
             <div key={item.title}>
               <div className="flex flex-col md:flex-row items-center gap-5 lg:gap-10 bg-white mb-5 p-10">
-                <div>
+                <div className="border-r pr-6 border-dashed">
                   <img src={item.image} alt="" />
                 </div>
                 <div>

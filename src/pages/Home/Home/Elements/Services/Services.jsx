@@ -54,7 +54,7 @@ const Services = () => {
             transition={{ duration: 0.5 }}
             className="text-center"
           >
-            <h1 className="text-4xl text-white font-bold">Our Services</h1>
+            <h1 className="text-4xl  font-bold">Our Services</h1>
             <p className="text-white max-w-2xl mx-auto my-5">
               Enjoy fast, reliable parcel delivery with real-time tracking and
               zero hassle. From personal packages to business shipments — we
@@ -71,7 +71,7 @@ const Services = () => {
                 key={item.title}
                 className="bg-white p-4 space-y-3 text-center rounded-lg transition-all duration-300 hover:bg-baseColor"
               >
-                <div className="flex items-center justify-center mx-auto bg-base-300 w-15 h-15 rounded-full border border-bg1">
+                <div className="flex items-center justify-center mx-auto bg-gray-400 w-15 h-15 rounded-full border border-bg1">
                   <span className="text-xl text-bg1">{item.icon}</span>
                 </div>
                 <div>
