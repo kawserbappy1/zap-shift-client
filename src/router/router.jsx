@@ -7,11 +7,15 @@ import AboutUs from "../pages/AboutUs/AboutUs";
 import Blog from "../pages/Blog/Blog";
 import Contact from "../pages/Contact/Contact";
 import Pricing from "../pages/Pricing/Pricing";
+import AuthLayouts from "./../layouts/AuthLayouts";
+import Login from "../pages/Auth/Login";
+import Register from "../pages/Auth/Register";
 
 export const router = createBrowserRouter([
   {
     path: "/",
     element: <MainLayouts></MainLayouts>,
+    hydrateFallbackElement: <div>Loading...</div>,
     children: [
       {
         index: true,
@@ -41,6 +45,20 @@ export const router = createBrowserRouter([
       {
         path: "contact",
         element: <Contact></Contact>,
+      },
+    ],
+  },
+  {
+    path: "/",
+    element: <AuthLayouts></AuthLayouts>,
+    children: [
+      {
+        path: "/login",
+        element: <Login></Login>,
+      },
+      {
+        path: "register",
+        element: <Register></Register>,
       },
     ],
   },

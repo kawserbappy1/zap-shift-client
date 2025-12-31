@@ -37,9 +37,9 @@ const Navbar = () => {
           </nav>
           {/* call to action button  */}
           <div className="hidden sm:flex flex items-center gap-1 sm:gap-2">
-            <ButtonOutline text="Sign In"></ButtonOutline>
+            <ButtonOutline to={"/login"} text="Sign In"></ButtonOutline>
             <div className="flex items-center group">
-              <Buttonbg text="Sign Up"></Buttonbg>
+              <Buttonbg to={"/register"} text="Sign Up"></Buttonbg>
               <ArrowSign></ArrowSign>
             </div>
           </div>
@@ -74,9 +74,10 @@ const Navbar = () => {
             <ButtonOutline
               className="text-white hover:outline-0"
               text="Sign In"
+              to="/login"
             ></ButtonOutline>
             <div className="flex items-center group">
-              <Buttonbg text="Sign Up"></Buttonbg>
+              <Buttonbg to={"/register"} text="Sign Up"></Buttonbg>
               <ArrowSign></ArrowSign>
             </div>
           </div>
