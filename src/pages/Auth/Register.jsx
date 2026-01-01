@@ -6,15 +6,51 @@ import { RxEyeOpen } from "react-icons/rx";
 import { Link } from "react-router";
 import { FcGoogle } from "react-icons/fc";
 import { MdDriveFileRenameOutline } from "react-icons/md";
+import useAuth from "./../../hooks/useAuth";
+import { useForm, useWatch } from "react-hook-form";
+import { toast } from "react-toastify";
 
 const Register = () => {
   const [pass, setPass] = useState(true);
+  const { signUpNewUser } = useAuth();
+
+  const {
+    register,
+    control,
+    handleSubmit,
+    reset,
+    formState: { errors },
+  } = useForm();
+  const watchPassword = useWatch({
+    name: "password",
+    control,
+  });
+
+  // console.log(watchPassword);
+
+  const handleSignUpForm = (data) => {
+    const { name, email, password, confirm_pass } = data;
+    signUpNewUser(email, password)
+      .then((res) => {
+        console.log(res.user);
+
+        // reset();
+      })
+      .catch((err) => {
+        if (err?.code === "auth/email-already-in-use") {
+          toast.error("This Email already exists.");
+        } else {
+          toast.error("Signup Failed ! Try again later");
+        }
+      });
+  };
+
   return (
     <div className="w-full max-w-xs mx-auto">
       <h1 className="text-bg2 text-4xl font-bold">Create an Account</h1>
       <p>Register with ZapShift</p>
       <div className="mt-10 ">
-        <form>
+        <form onSubmit={handleSubmit(handleSignUpForm)}>
           <div className=" relative mb-2">
             <div className="absolute top-9 left-2">
               <MdDriveFileRenameOutline className="text-bg1" />
@@ -26,11 +62,27 @@ const Register = () => {
               Your Name
             </label>
             <input
+              {...register("name", {
+                required: {
+                  value: true,
+                  message: "Name is required",
+                },
+                minLength: {
+                  value: 12,
+                  message: "Name can not less then 12 charchter",
+                },
+              })}
               type="text"
               placeholder="Your Name"
               name="name"
               className="px-9 py-2 w-full shadow-2xl bg-gray-300 outline-0  ring-inset ring-gray-500 focus:outline-1 outline-baseColor rounded-sm"
             />
+
+            {errors.name && (
+              <span className="text-sm text-red-500">
+                {errors.name.message}
+              </span>
+            )}
           </div>
           <div className=" relative ">
             <div className="absolute top-9 left-2">
@@ -43,28 +95,59 @@ const Register = () => {
               Email
             </label>
             <input
+              {...register("email", {
+                required: {
+                  value: true,
+                  message: "Email is required",
+                },
+                pattern: {
+                  value: /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/,
+                  message: "Type your valid email",
+                },
+              })}
               type="email"
               placeholder="Eamil"
-              name="email"
               className="px-9 py-2 w-full shadow-2xl bg-gray-300 outline-0  ring-inset ring-gray-500 focus:outline-1 outline-baseColor rounded-sm"
             />
+            {errors.email && (
+              <span className="text-sm text-red-500">
+                {errors.email.message}
+              </span>
+            )}
           </div>
           <div className=" relative mt-4">
             <div className="absolute top-9 left-2">
               <CiUnlock className="text-bg1" />
             </div>
-            <label
-              htmlFor="email"
-              className="block text-gray-800 mb-1 font-semibold text-sm"
-            >
+            <label className="block text-gray-800 mb-1 font-semibold text-sm">
               Password
             </label>
             <input
+              {...register("password", {
+                required: {
+                  value: true,
+                  message: "password is required",
+                },
+                minLength: {
+                  value: 6,
+                  message: "Password Must be at least 6 charchter",
+                },
+                pattern: {
+                  value:
+                    /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/,
+                  message:
+                    "Password contain a digit, a uppercase, a lowercase and a specia charchter",
+                },
+              })}
               type={pass ? "password" : "text"}
               placeholder="******"
-              name="email"
               className="px-9 py-2 w-full shadow-2xl bg-gray-300 outline-0  ring-inset ring-gray-500 focus:outline-1 outline-baseColor rounded-sm"
             />
+            {errors?.password && (
+              <span className="text-sm text-red-500">
+                {errors.password.message}
+              </span>
+            )}
             <div
               onClick={() => setPass(!pass)}
               className={`absolute top-9 right-2 cursor-pointer`}
@@ -77,18 +160,31 @@ const Register = () => {
             <div className="absolute top-9 left-2">
               <CiUnlock className="text-bg1" />
             </div>
-            <label
-              htmlFor="email"
-              className="block text-gray-800 mb-1 font-semibold text-sm"
-            >
+            <label className="block text-gray-800 mb-1 font-semibold text-sm">
               Confirm Password
             </label>
             <input
+              {...register("confirm_pass", {
+                required: {
+                  value: true,
+                  message: "Confirm password is required",
+                },
+                validate: (value) => {
+                  if (value === watchPassword) {
+                    return true;
+                  }
+                  return "password does not match";
+                },
+              })}
               type={pass ? "password" : "text"}
               placeholder="******"
-              name="email"
               className="px-9 py-2 w-full shadow-2xl bg-gray-300 outline-0  ring-inset ring-gray-500 focus:outline-1 outline-baseColor rounded-sm"
             />
+            {errors.confirm_pass && (
+              <span className="text-sm text-red-500">
+                {errors.confirm_pass.message}
+              </span>
+            )}
             <div
               onClick={() => setPass(!pass)}
               className={`absolute top-9 right-2 cursor-pointer`}
