@@ -10,6 +10,7 @@ import Pricing from "../pages/Pricing/Pricing";
 import AuthLayouts from "./../layouts/AuthLayouts";
 import Login from "../pages/Auth/Login";
 import Register from "../pages/Auth/Register";
+import BeRider from "../pages/BeRider/BeRider";
 
 export const router = createBrowserRouter([
   {
@@ -45,6 +46,10 @@ export const router = createBrowserRouter([
       {
         path: "contact",
         element: <Contact></Contact>,
+      },
+      {
+        path: "be-rider",
+        element: <BeRider></BeRider>,
       },
     ],
   },

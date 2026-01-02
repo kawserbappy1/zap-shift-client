@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { TfiEmail } from "react-icons/tfi";
 import { CiUnlock } from "react-icons/ci";
 import { GoEyeClosed } from "react-icons/go";
@@ -9,17 +9,19 @@ import { MdDriveFileRenameOutline } from "react-icons/md";
 import useAuth from "./../../hooks/useAuth";
 import { useForm, useWatch } from "react-hook-form";
 import { toast } from "react-toastify";
+import { FaCamera, FaUpload, FaUser } from "react-icons/fa";
 
 const Register = () => {
   const [pass, setPass] = useState(true);
-  const { signUpNewUser } = useAuth();
+  const [previewImage, setPreviewImage] = useState(null);
+  const { signUpNewUser, signUpOrSignInWithGoogle } = useAuth();
 
   const {
     register,
     control,
     handleSubmit,
     reset,
-    formState: { errors },
+    formState: { errors, isSubmitting },
   } = useForm();
   const watchPassword = useWatch({
     name: "password",
@@ -32,9 +34,8 @@ const Register = () => {
     const { name, email, password, confirm_pass } = data;
     signUpNewUser(email, password)
       .then((res) => {
-        console.log(res.user);
-
-        // reset();
+        toast.success("Successfully sign up");
+        reset();
       })
       .catch((err) => {
         if (err?.code === "auth/email-already-in-use") {
@@ -44,13 +45,64 @@ const Register = () => {
         }
       });
   };
-
+  const handleGoogleSignUp = () => {
+    signUpOrSignInWithGoogle()
+      .then(() => {
+        toast.success("Sign Up successfully");
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+  useEffect(() => {
+    return () => {
+      if (previewImage) {
+        URL.revokeObjectURL(previewImage);
+      }
+    };
+  }, [previewImage]);
   return (
     <div className="w-full max-w-xs mx-auto">
       <h1 className="text-bg2 text-4xl font-bold">Create an Account</h1>
       <p>Register with ZapShift</p>
       <div className="mt-10 ">
         <form onSubmit={handleSubmit(handleSignUpForm)}>
+          <div className="flex flex-col items-center mb-2">
+            <div className=" relative">
+              <div className="w-32 h-32 rounded-full border-4 border-white shdow-xl overflow-hidden bg-linear-to-br from-gray-100 to-gray-200">
+                <div className="w-full h-full flex items-center justify-center">
+                  {previewImage ? (
+                    <img src={previewImage} alt="" />
+                  ) : (
+                    <FaUser className="text-gray-400 text-5xl" />
+                  )}
+                </div>
+              </div>
+
+              <div className=" absolute bottom-0 right-0 bg-linear-to-r from-blue-500 to-emerald-500 w-12 h-12 rounded-full flex items-center justify-center text-white">
+                <FaCamera></FaCamera>
+              </div>
+
+              <input
+                type="file"
+                accept="image/*"
+                {...register("photo")}
+                onChange={(e) => {
+                  register("photo").onChange(e);
+                  const file = e.target.files[0];
+                  if (file) {
+                    setPreviewImage(URL.createObjectURL(file));
+                  }
+                }}
+                className=" absolute inset-0 w-full h-full opacity-0 cursor-pointer"
+              />
+            </div>
+
+            <div className="flex gap-2 items-center">
+              <FaUpload className="text-sm text-bg1"></FaUpload>
+              <p className="text-sm font-bold">Upload image</p>
+            </div>
+          </div>
           <div className=" relative mb-2">
             <div className="absolute top-9 left-2">
               <MdDriveFileRenameOutline className="text-bg1" />
@@ -194,8 +246,11 @@ const Register = () => {
           </div>
 
           <div className="">
-            <button className="bg-baseColor w-full py-2 mt-5 cursor-pointer font-bold">
-              Sign Up
+            <button
+              disabled={isSubmitting}
+              className="bg-baseColor w-full py-2 mt-5 cursor-pointer font-bold"
+            >
+              {isSubmitting ? "Creating..." : "Sign Up"}
             </button>
           </div>
         </form>
@@ -207,7 +262,10 @@ const Register = () => {
         </div>
 
         <div>
-          <button className="flex items-center justify-center gap-2 text-bg1 bg-gray-500 w-full py-2 mt-5 cursor-pointer font-bold">
+          <button
+            onClick={handleGoogleSignUp}
+            className="flex items-center justify-center gap-2 text-bg1 bg-gray-500 w-full py-2 mt-5 cursor-pointer font-bold"
+          >
             <FcGoogle /> Sign in with Google
           </button>
         </div>

@@ -7,9 +7,17 @@ import Logo from "./Logo";
 import MyLink from "./MyLink";
 import { MdOutlineClose } from "react-icons/md";
 import { RiMenuUnfold2Line } from "react-icons/ri";
+import useAuth from "./../hooks/useAuth";
+import { Link } from "react-router";
+import { CgMenuGridO } from "react-icons/cg";
+import { FaUserEdit } from "react-icons/fa";
+import { IoMdLogOut } from "react-icons/io";
+import { FaRegUser } from "react-icons/fa";
+import Swal from "sweetalert2";
 
 const Navbar = () => {
   const [menuOpen, setMenuOpen] = useState(false);
+  const { user, logOutUser } = useAuth();
   const navLinks = [
     { to: "/", label: "Home" },
     { to: "/services", label: "Services" },
@@ -18,7 +26,35 @@ const Navbar = () => {
     { to: "/pricing", label: "Pricing" },
     { to: "/blog", label: "Blog" },
     { to: "/contact", label: "Contact" },
-  ];
+    user && { to: "/be-rider", label: "Be Rider" },
+  ].filter(Boolean);
+
+  const handleLogoutUser = () => {
+    Swal.fire({
+      title: "Are you sure?",
+      text: "Do you want to log out?",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, log out!",
+      cancelButtonText: "Cancel",
+    }).then((res) => {
+      if (res.isConfirmed) {
+        logOutUser()
+          .then(() => {
+            Swal.fire(
+              "Logged Out!",
+              "You have been successfully logged out.",
+              "success"
+            );
+          })
+          .catch((err) => {
+            console.log(err);
+          });
+      }
+    });
+  };
   return (
     <div className="fixed top-0 left-0 w-full z-999 transition-all duration-300">
       <Container>
@@ -36,12 +72,63 @@ const Navbar = () => {
             </ul>
           </nav>
           {/* call to action button  */}
-          <div className="hidden sm:flex flex items-center gap-1 sm:gap-2">
-            <ButtonOutline to={"/login"} text="Sign In"></ButtonOutline>
-            <div className="flex items-center group">
-              <Buttonbg to={"/register"} text="Sign Up"></Buttonbg>
-              <ArrowSign></ArrowSign>
-            </div>
+          <div className="flex items-center gap-1 sm:gap-2">
+            {user ? (
+              <>
+                <div className="relative group">
+                  <div className="w-10 h-10 rounded-full overflow-hidden border border-bg-1 bg-gray-400 cursor-pointer ">
+                    {user?.photoURL ? (
+                      <img src={user?.photoURL} alt="" />
+                    ) : (
+                      <div className="flex items-center justify-center w-ful h-full">
+                        <FaRegUser className="text-bg1" />
+                      </div>
+                    )}
+                  </div>
+                  <div className="absolute right-0  w-52 bg-white rounded-md shadow-2xl border border-gray-200 p-2 overflow-hidden z-30 opacity-0 invisible group-hover:opacity-100 group-hover:visible">
+                    <ul className="">
+                      <li className="border-b border-gray-100 pb-1 mb-2  font-bold hover:bg-gray-200">
+                        <h3>{user?.displayName || "User"}</h3>
+                        <p className="text-xs">{user?.email}</p>
+                      </li>
+                      <li className="flex items-center gap-2 text-bg1 font-bold border-b border-b-gray-100 mb-1 pb-1 hover:bg-gray-200">
+                        <CgMenuGridO />
+                        <Link to={"/"}>Dashboard</Link>
+                      </li>
+                      <li className="flex items-center gap-2 text-bg1 font-bold border-b border-b-gray-100 mb-1 pb-1 hover:bg-gray-200">
+                        <FaUserEdit />
+                        <Link to={"/"}>Edit Profile</Link>
+                      </li>
+                      <li className="flex items-center gap-2 text-bg1 font-bold hover:bg-gray-200">
+                        <IoMdLogOut />
+                        <button
+                          onClick={handleLogoutUser}
+                          className=" cursor-pointer"
+                        >
+                          Log Out
+                        </button>
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+              </>
+            ) : (
+              <>
+                <ButtonOutline
+                  to={"/login"}
+                  text="Sign In"
+                  className="hidden sm:flex"
+                ></ButtonOutline>
+                <div className="flex items-center group">
+                  <Buttonbg
+                    to={"/register"}
+                    text="Sign Up"
+                    className="hidden sm:flex"
+                  ></Buttonbg>
+                  <ArrowSign className="hidden sm:flex"></ArrowSign>
+                </div>{" "}
+              </>
+            )}
           </div>
           {/* menu button  */}
           <div className="md:hidden z-50">

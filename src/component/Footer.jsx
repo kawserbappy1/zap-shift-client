@@ -17,7 +17,7 @@ const Footer = () => {
   ];
   return (
     <Container>
-      <div className="bg-bg2 py-10">
+      <div className="bg-bg2 py-10 px-2">
         <div className="flex flex-col items-center gap-6">
           <Logo></Logo>
           <p className="text-white max-w-xl">
@@ -27,7 +27,7 @@ const Footer = () => {
           </p>
 
           <div className=" border-b border-t border-dashed py-4 text-center">
-            <ul className="flex gap-4 xl:gap-8">
+            <ul className="flex flex-wrap gap-4 xl:gap-8">
               {navLinks.map(({ to, label }) => (
                 <li key={to}>
                   <MyLink to={to}>{label}</MyLink>
