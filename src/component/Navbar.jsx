@@ -26,8 +26,8 @@ const Navbar = () => {
     { to: "/pricing", label: "Pricing" },
     { to: "/blog", label: "Blog" },
     { to: "/contact", label: "Contact" },
-    user && { to: "/be-rider", label: "Be Rider" },
-  ].filter(Boolean);
+    { to: "/be-rider", label: "Be Rider" },
+  ];
 
   const handleLogoutUser = () => {
     Swal.fire({

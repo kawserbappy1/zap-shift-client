@@ -11,6 +11,8 @@ import AuthLayouts from "./../layouts/AuthLayouts";
 import Login from "../pages/Auth/Login";
 import Register from "../pages/Auth/Register";
 import BeRider from "../pages/BeRider/BeRider";
+import PrivateRoute from "./PrivateRoute";
+import ForgotPassword from "../pages/Auth/ForgotPassword";
 
 export const router = createBrowserRouter([
   {
@@ -49,7 +51,11 @@ export const router = createBrowserRouter([
       },
       {
         path: "be-rider",
-        element: <BeRider></BeRider>,
+        element: (
+          <PrivateRoute>
+            <BeRider></BeRider>
+          </PrivateRoute>
+        ),
       },
     ],
   },
@@ -64,6 +70,10 @@ export const router = createBrowserRouter([
       {
         path: "register",
         element: <Register></Register>,
+      },
+      {
+        path: "forgot-password",
+        element: <ForgotPassword></ForgotPassword>,
       },
     ],
   },

@@ -3,18 +3,23 @@ import { TfiEmail } from "react-icons/tfi";
 import { CiUnlock } from "react-icons/ci";
 import { GoEyeClosed } from "react-icons/go";
 import { RxEyeOpen } from "react-icons/rx";
-import { Link } from "react-router";
+import { Link, useLocation, useNavigate } from "react-router";
 import { FcGoogle } from "react-icons/fc";
 import { MdDriveFileRenameOutline } from "react-icons/md";
 import useAuth from "./../../hooks/useAuth";
 import { useForm, useWatch } from "react-hook-form";
 import { toast } from "react-toastify";
 import { FaCamera, FaUpload, FaUser } from "react-icons/fa";
+import { uploadImage } from "../../utility/ImageHost.js";
 
 const Register = () => {
   const [pass, setPass] = useState(true);
   const [previewImage, setPreviewImage] = useState(null);
-  const { signUpNewUser, signUpOrSignInWithGoogle } = useAuth();
+  const { signUpNewUser, signUpOrSignInWithGoogle, updateUserProfile } =
+    useAuth();
+  const navigate = useNavigate();
+  const location = useLocation();
+  const from = location.state?.from?.pathname || "/";
 
   const {
     register,
@@ -30,20 +35,32 @@ const Register = () => {
 
   // console.log(watchPassword);
 
-  const handleSignUpForm = (data) => {
-    const { name, email, password, confirm_pass } = data;
-    signUpNewUser(email, password)
-      .then((res) => {
-        toast.success("Successfully sign up");
-        reset();
-      })
-      .catch((err) => {
-        if (err?.code === "auth/email-already-in-use") {
-          toast.error("This Email already exists.");
-        } else {
-          toast.error("Signup Failed ! Try again later");
-        }
-      });
+  const handleSignUpForm = async (data) => {
+    const { name, email, password } = data;
+    try {
+      // 1. get image file
+      const imageFile = data.photo[0];
+      // 2. upload image to imgbb
+      const imageUrl = await uploadImage(imageFile);
+      // 3. create user
+      await signUpNewUser(email, password);
+      // 4. update firebase profile
+      const userProfile = {
+        displayName: name,
+        email: email,
+        photoURL: imageUrl,
+      };
+      await updateUserProfile(userProfile);
+      toast.success("Successfully sign up");
+      reset();
+      navigate(from, { replace: true });
+    } catch (err) {
+      if (err?.code === "auth/email-already-in-use") {
+        toast.error("This Email already exists.");
+      } else {
+        toast.error("Signup Failed ! Try again later");
+      }
+    }
   };
   const handleGoogleSignUp = () => {
     signUpOrSignInWithGoogle()
@@ -86,14 +103,15 @@ const Register = () => {
               <input
                 type="file"
                 accept="image/*"
-                {...register("photo")}
-                onChange={(e) => {
-                  register("photo").onChange(e);
-                  const file = e.target.files[0];
-                  if (file) {
-                    setPreviewImage(URL.createObjectURL(file));
-                  }
-                }}
+                {...register("photo", {
+                  required: true,
+                  onChange: (e) => {
+                    const file = e.target.files[0];
+                    if (file) {
+                      setPreviewImage(URL.createObjectURL(file));
+                    }
+                  },
+                })}
                 className=" absolute inset-0 w-full h-full opacity-0 cursor-pointer"
               />
             </div>

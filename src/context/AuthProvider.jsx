@@ -4,9 +4,11 @@ import {
   createUserWithEmailAndPassword,
   GoogleAuthProvider,
   onAuthStateChanged,
+  sendPasswordResetEmail,
   signInWithEmailAndPassword,
   signInWithPopup,
   signOut,
+  updateProfile,
 } from "firebase/auth";
 import { auth } from "../Firebase/firebase.init.js";
 const provider = new GoogleAuthProvider();
@@ -29,10 +31,20 @@ const AuthProvider = ({ children }) => {
     setLoader(true);
     return signInWithEmailAndPassword(auth, email, password);
   };
-
+  // logout function
   const logOutUser = () => {
     setLoader(true);
     return signOut(auth);
+  };
+  // update user profile function
+  const updateUserProfile = (profile) => {
+    return updateProfile(auth.currentUser, profile);
+  };
+
+  // password reset
+  const passwordReset = (email) => {
+    setLoader(true);
+    return sendPasswordResetEmail(auth, email);
   };
 
   useEffect(() => {
@@ -51,6 +63,8 @@ const AuthProvider = ({ children }) => {
     signUpOrSignInWithGoogle,
     signInExistsUser,
     logOutUser,
+    updateUserProfile,
+    passwordReset,
   };
   return <AuthContext value={data}>{children}</AuthContext>;
 };

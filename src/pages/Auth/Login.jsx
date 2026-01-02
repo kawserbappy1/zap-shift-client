@@ -3,7 +3,7 @@ import { TfiEmail } from "react-icons/tfi";
 import { CiUnlock } from "react-icons/ci";
 import { GoEyeClosed } from "react-icons/go";
 import { RxEyeOpen } from "react-icons/rx";
-import { Link } from "react-router";
+import { Link, useLocation, useNavigate } from "react-router";
 import { FcGoogle } from "react-icons/fc";
 import useAuth from "../../hooks/useAuth";
 import { toast } from "react-toastify";
@@ -12,6 +12,9 @@ import { useForm } from "react-hook-form";
 const Login = () => {
   const [pass, setPass] = useState(true);
   const { signUpOrSignInWithGoogle, signInExistsUser } = useAuth();
+  const navigate = useNavigate();
+  const location = useLocation();
+  const from = location.state?.from?.pathname || "/";
   const {
     register,
     handleSubmit,
@@ -23,6 +26,7 @@ const Login = () => {
       .then((result) => {
         console.log(result);
         toast.success("Sign In successufuly");
+        navigate(from, { replace: true });
       })
       .catch((error) => {
         if (error.code === "auth/invalid-credential") {
@@ -103,7 +107,7 @@ const Login = () => {
               {pass ? <GoEyeClosed /> : <RxEyeOpen />}
             </div>
             <div className="text-right text-xs font-bold mt-1">
-              <Link>Forget your password</Link>
+              <Link to={"/forgot-password"}>Forget your password</Link>
             </div>
           </div>
 
